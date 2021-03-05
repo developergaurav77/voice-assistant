@@ -1,6 +1,13 @@
 import pyttsx3  #importing this module to convert text to speech
 import datetime #importing this module to use date and time
 import speech_recognition as sr #importing this module to convert speech into text
+import smtplib  #importing this module to send emails
+from secret import senderEmail, epwd, to #importing sender email id(senderEmail), password(epwd) and receiver email id(to)
+from email.message import EmailMessage #importing to send message and subject 
+import pyautogui
+import webbrowser as web
+from time import sleep
+
 
 engine = pyttsx3.init() # object creation
 
@@ -70,14 +77,27 @@ def takeCommandMic():
         query = r.recognize_google(audio,language='en-IN')
         print(query)
     except Exception as e:
-        print('Say that again please')
+        print(e)
         speak('Say that again please')
         return 'None'
     return query
-    
+
+def sendEmail(receiver,subject,content):
+    smtp_server = "smtp.gmail.com"
+    port = 587  # For starttls 
+    server = smtplib.SMTP(smtp_server,port)   
+    server.starttls()
+    server.login(senderEmail,epwd)
+    email = EmailMessage()
+    email['From'] = senderEmail
+    email['To'] = receiver
+    email['Subject'] = subject
+    email.set_content(content)
+    server.send_message(email)
+    server.close()
 
 if __name__ == "__main__" :
-    wishMe()
+   # wishMe()
     while True:
         
         query = takeCommandMic().lower()
@@ -85,5 +105,37 @@ if __name__ == "__main__" :
             time()
         elif 'date' in query:
             date()
-        elif 'exit' or 'close' in query:
-            exit()    
+
+        elif 'exit' in query:
+            speak('closing the program')
+            exit()   
+      
+        elif 'messenger' in query:
+            speak('opening messenger') 
+            web.open('https://www.messenger.com/')  
+            sleep(5)
+
+        elif 'send email' in query:
+            email_list = {
+                
+                'bishal' : 'bishalkhatri675@gmail.com',
+                'bhupesh' : 'bhupeshjoshi293@gmail.com',
+                'ayush' : 'joshiayush20582059@gmail.com'
+
+            }
+            try:
+                speak('To whom you want to send the mail')
+                name = takeCommandMic().lower()
+                print(name)
+                receiver = email_list[name]
+                speak('what should be the subject of mail sir?')
+                subject = takeCommandMic()
+                speak('what should i write in mail sir?')
+                content = takeCommandMic()
+                sendEmail(receiver,subject,content)
+                speak('email sent successfully')
+            except Exception as e:
+                print(e)    
+                speak('unable to send email')
+       
+                
