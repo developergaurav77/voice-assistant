@@ -5,8 +5,13 @@ import smtplib  #importing this module to send emails
 from secret import senderEmail, epwd, to #importing sender email id(senderEmail), password(epwd) and receiver email id(to)
 from email.message import EmailMessage #importing to send message and subject 
 import pyautogui
-import webbrowser as web
-from time import sleep
+import webbrowser as web  #importing this module to open different website
+from time import sleep  #importing this module to sleep the part of program for some time
+import wikipedia  #importing this module to search anything on wikipedia using word 'wikipedia'
+import pywhatkit  #importing this module to open video on youtube
+import pyperclip  #importing this module to convert selected text to speech
+import os         #importing this module to access the file location in computer
+
 
 
 engine = pyttsx3.init() # object creation
@@ -74,11 +79,13 @@ def takeCommandMic():
       audio = r.listen(source)  
     try:
         print('Recognizing...')
-        query = r.recognize_google(audio,language='en-IN')
+        query = r.recognize_google(audio)
         print(query)
     except Exception as e:
         print(e)
-        speak('Say that again please')
+        #speak('Say that again please')
+        print('Say that again please')
+        
         return 'None'
     return query
 
@@ -96,9 +103,28 @@ def sendEmail(receiver,subject,content):
     server.send_message(email)
     server.close()
 
+def searchGoogle():
+    print('Searching on google')
+    speak('what should i search on google')
+    search = takeCommandMic().lower()
+    print(search)
+    
+    web.open('https://www.google.com/search?q='+search)
+
+def textToSpeech(): 
+
+    text = pyperclip.paste()
+    print('sure')
+    speak('sure')
+    print(text)
+    speak(text)   
+    
+
+
 if __name__ == "__main__" :
-   # wishMe()
+    wishMe()
     while True:
+        shutdown = 'offline'
         
         query = takeCommandMic().lower()
         if 'time' in  query:
@@ -106,15 +132,106 @@ if __name__ == "__main__" :
         elif 'date' in query:
             date()
 
-        elif 'exit' in query:
+        elif shutdown in query:
             speak('closing the program')
-            exit()   
-      
-        elif 'messenger' in query:
-            speak('opening messenger') 
-            web.open('https://www.messenger.com/')  
-            sleep(5)
+            exit() 
 
+        elif 'who are you' in query:
+            speak('i am voice assistant, created by gaurav! using python programming language')    
+        elif 'how are you' in query:
+            speak('i am fine and hope you are also doing well sir!!')
+        elif 'hello' in query:
+            speak('ohh hello sir, please tell me how can i help you?')    
+        elif 'junior' in query:
+            speak('yes sir, how can i help you?')
+        elif 'open' in query:
+            query = query.replace('open',"")
+            print('Opening'+query)
+            speak('opening '+query) 
+            link = 'https://www.' + query + ' .com/'
+            link = link.replace(" ", "")
+            print(link)
+            web.open(link, new=0, autoraise=True)
+          
+
+          
+
+        elif 'wikipedia' in query:
+            print('Searching on wikipedia')
+            speak('Searching on wikipedia')
+            query = query.replace('wikipedia'," ")
+            result = wikipedia.summary(query,sentences=2)
+            speak('According to wikipedia')
+            print(result)
+            speak(result)
+
+        elif 'search' in query:
+            query = query.replace('google'," ")
+            query = query.replace('search'," ")
+            query = query.replace('on', " ")
+            web.open('https://www.google.com/search?q='+query)
+            sleep(2)  
+
+        elif 'google search' in query:
+            web.open('https://www.google.com/') 
+            sleep(1)
+            searchGoogle()
+
+        elif 'play video on youtube' in query:
+            web.open('https://www.youtube.com/')
+            speak('opening youtube')
+            sleep(2)
+            print('what should i play on youtube?')
+            speak('what should i play on youtube?')
+            topic = takeCommandMic()
+            pywhatkit.playonyt(topic) 
+
+        elif 'youtube' in query:
+            web.open('https://www.youtube.com/') 
+            speak('opening youtube')
+
+        elif 'mail' in query:
+            web.open('https://mail.google.com/')
+            speak('opening gmail')
+
+
+        elif 'read' in query:
+            textToSpeech()
+
+        elif 'code' in query:
+            codepath = 'C:\\Users\\GAURAV\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe'
+            print('opening vs code')
+            speak('opening vs code')
+            os.startfile(codepath)
+
+        elif 'spotify' in query:
+            codepath2 = 'C:\\Users\\GAURAV\\AppData\\Roaming\\Spotify\\Spotify.exe'
+            print('opening Spotify')
+            speak('opening Spotify')
+            os.startfile(codepath2)
+        
+        elif 'android studio' in query:
+            codepath3 = 'C:\\Program Files\\Android\\Android Studio\\bin\\studio64.exe'
+            print('opening Android Studio')
+            speak('opening android studio')
+            os.startfile(codepath3)
+
+        elif 'pro' in query:
+            codepath4 = 'C:\\Program Files\\Adobe\\Adobe Premiere Pro 2020\\Adobe Premiere Pro.exe'
+            print('opening premier pro')
+            speak('opening premier pro')
+            os.startfile(codepath4)
+
+        elif 'documents' in query:
+            try:
+                print('Opening...')
+                speak('Opening...')
+                os.system('explorer C://{}'.format(query.replace('Open',' ')))
+               
+            except Exception as e:
+                print(e)
+               #speak('Say that again please')
+                print('can you please repeat again!')
         elif 'send email' in query:
             email_list = {
                 
