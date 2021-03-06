@@ -11,16 +11,21 @@ import wikipedia  #importing this module to search anything on wikipedia using w
 import pywhatkit  #importing this module to open video on youtube
 import pyperclip  #importing this module to convert selected text to speech
 import os         #importing this module to access the file location in computer
-
-
+import pyjokes    #imorting this module to get jokes
+import time as tt
+import psutil #importing this module to get the system information
 
 engine = pyttsx3.init() # object creation
 
 """ RATE"""
 engine.getProperty('rate')   # getting details of current speaking rate
-voiceRate = 180
+voiceRate = 190
 engine.setProperty('rate', voiceRate)     # setting up new voice rate
 
+"""VOICE"""
+voices = engine.getProperty('voices')       #getting details of current voice
+#engine.setProperty('voice', voices[0].id)  #changing index, changes voices. o for male
+engine.setProperty('voice', voices[1].id)
 
 
 def speak(audio): #this function to used to speak
@@ -62,12 +67,11 @@ def wishMe(): #this is used to initiate the program
     print('welcome back sir!')
     speak('welcome back sir!')    
     time()
-    date() 
-    greeting()
+    date()
     speak('junior, at your service , please tell me how can i help you sir?')
 
 def takeCommandTer():
-    query = input('Please tell me, how can help you sir? \n')  
+    query = input('Please tell me, how can i help you sir? \n')  
     return query
 
 def takeCommandMic():
@@ -119,10 +123,49 @@ def textToSpeech():
     print(text)
     speak(text)   
     
+def screenSort():
+    img_name = tt.time()
+    img_name = f'C:\\Users\\GAURAV\\Desktop\\python_projects\\screenshort\\{img_name}.png'
+    speak('sceenshort taken')
+    img = pyautogui.screenshot(img_name)
+    img.show()
+def cpu():
+    usage = str(psutil.cpu_percent()) 
+    print('cpu is at ' + usage)
+    speak('cpu is at' + usage)
+    battery = psutil.sensors_battery()
+    print('battery is at' )  
+    print(battery.percent)
+    print(battery)
 
+    speak('battery is at')
+    speak('{}%'.format(battery.percent) )
+    batteryInfo = str(battery.power_plugged)
+    print(batteryInfo)
+    
+    if battery.percent < 25 and batteryInfo == 'False':
+        speak(' Since, Battery is  {} percent, I suggest you to charge system sir!'.format(battery.percent))
+    if battery.percent < 15 and battery.power_plugged == False :
+        speak('battery is at critical level(<15%), whould you like to exit program!')    
+        info = takeCommandMic().lower()
+        if 'yes' in info:
+            speak('closing the application')
+            quit()
+        else:
+            speak('i strogly recommend you to charge the system sir!')  
+    if battery.power_plugged == True: 
+        speak(' and the system is charging')
+    else:
+        speak(' and the system is running on battery')
+    
+   
 
 if __name__ == "__main__" :
-    wishMe()
+    #wishMe()
+    #cpu()
+    speak('welcome sir!')
+    
+    
     while True:
         shutdown = 'offline'
         
@@ -136,8 +179,8 @@ if __name__ == "__main__" :
             speak('closing the program')
             exit() 
 
-        elif 'who are you' in query:
-            speak('i am voice assistant, created by gaurav! using python programming language')    
+        elif 'who are you'  in query:
+            speak('i am junior, a voice assistant, created by gaurav! using python programming language')    
         elif 'how are you' in query:
             speak('i am fine and hope you are also doing well sir!!')
         elif 'hello' in query:
@@ -153,9 +196,9 @@ if __name__ == "__main__" :
             print(link)
             web.open(link, new=0, autoraise=True)
           
-
-          
-
+        elif 'status' in query:
+            cpu()
+    
         elif 'wikipedia' in query:
             print('Searching on wikipedia')
             speak('Searching on wikipedia')
@@ -190,7 +233,7 @@ if __name__ == "__main__" :
             web.open('https://www.youtube.com/') 
             speak('opening youtube')
 
-        elif 'mail' in query:
+        elif 'gmail' in query:
             web.open('https://mail.google.com/')
             speak('opening gmail')
 
@@ -232,27 +275,67 @@ if __name__ == "__main__" :
                 print(e)
                #speak('Say that again please')
                 print('can you please repeat again!')
+        elif 'local d' in query:
+            codepath5 = 'D:\\'
+            speak('opening local disk d')
+            os.startfile(codepath5)  
+
+        elif 'desktop' in query:
+            codepath6 = 'C:\\Users\\GAURAV\\Desktop\\'
+            speak('opening desktop')
+            os.startfile(codepath6)
+
+        elif 'joke' in query:
+            jokesss = pyjokes.get_joke()
+            print(jokesss)
+            speak(jokesss)
+
+        elif 'screenshot' in query:
+            screenSort()    
+
         elif 'send email' in query:
+            speak('would you send mail through terminal or voice command')
+            info = takeCommandMic().lower()
             email_list = {
                 
                 'bishal' : 'bishalkhatri675@gmail.com',
                 'bhupesh' : 'bhupeshjoshi293@gmail.com',
-                'ayush' : 'joshiayush20582059@gmail.com'
+                'ayush' : 'joshiayush20582059@gmail.com',
+                'gaurav':  'developer.gaurav77@gmail.com'
 
             }
-            try:
-                speak('To whom you want to send the mail')
-                name = takeCommandMic().lower()
-                print(name)
-                receiver = email_list[name]
-                speak('what should be the subject of mail sir?')
-                subject = takeCommandMic()
-                speak('what should i write in mail sir?')
-                content = takeCommandMic()
-                sendEmail(receiver,subject,content)
-                speak('email sent successfully')
-            except Exception as e:
-                print(e)    
-                speak('unable to send email')
-       
+
+            if 'terminal' in info:
+                    print('To whom you want to send the mail\n')
+                    name = takeCommandTer().lower()
+                    print(name)
+                    receiver = email_list[name]
+                    print('what should be the subject of mail sir?')
+                    subject = takeCommandTer()
+                    print('what should you write in mail sir?')
+                    content = takeCommandTer()
+                    sendEmail(receiver,subject,content)
+                    speak('email sent successfully')
+                    print('email sent successfully')
+               
+            
+            else:
+                try:
+                    speak('To whom you want to send the mail\n')
+                    nam = takeCommandMic().lower()
+                    print(nam)
+                    receiver = email_list[nam]
+                    speak('what should be the subject of mail sir?')
+                    subjec = takeCommandMic()
+                    speak('what should i write in mail sir?')
+                    conten = takeCommandMic()
+                    sendEmail(receiver,subjec,conten)
+                    speak('email sent successfully')
+                    print('email sent successfully')
+                except Exception as e:
+                    print(e)    
+                    speak('unable to send email')
+            
+              
+            
                 
