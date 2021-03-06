@@ -163,7 +163,8 @@ def cpu():
 if __name__ == "__main__" :
     #wishMe()
     #cpu()
-    speak('welcome sir!')
+    speak('welcome back sir!')
+    speak('How can i help you sir?')
     
     
     while True:
