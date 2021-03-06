@@ -52,16 +52,21 @@ def greeting():
     hour = datetime.datetime.now().hour
     if hour >=6 and hour <12 :
         print('good morning')
-        speak('good morning sir!')    
+        speak('good morning sir!') 
+        speak('How can i help you sir?')
+       
     elif hour >=12 and hour <18 :
         print('good afternoon')
         speak('good afternoon sir!')
+        speak('How you doing today? and how can i help you sir?')
     elif hour >=18 and hour < 24 :
         print('good evening')
         speak('good evening sir!')
+        speak('How was your day sir?')
     else:
         print('good night sir! its time to sleep')
-        speak('good night sir! its time to sleep')    
+        speak('good night sir! its time to sleep')
+        speak('But we can interact for some time!')    
 
 def wishMe(): #this is used to initiate the program
     print('welcome back sir!')
@@ -163,8 +168,7 @@ def cpu():
 if __name__ == "__main__" :
     #wishMe()
     #cpu()
-    speak('welcome back sir!')
-    speak('How can i help you sir?')
+    greeting()
     
     
     while True:
