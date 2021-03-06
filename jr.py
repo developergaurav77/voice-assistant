@@ -4,7 +4,7 @@ import speech_recognition as sr #importing this module to convert speech into te
 import smtplib  #importing this module to send emails
 from secret import senderEmail, epwd, to #importing sender email id(senderEmail), password(epwd) and receiver email id(to)
 from email.message import EmailMessage #importing to send message and subject 
-import pyautogui
+import pyautogui          #importing this module for screenshort
 import webbrowser as web  #importing this module to open different website
 from time import sleep  #importing this module to sleep the part of program for some time
 import wikipedia  #importing this module to search anything on wikipedia using word 'wikipedia'
