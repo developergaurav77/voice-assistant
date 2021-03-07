@@ -12,7 +12,7 @@ import pywhatkit  #importing this module to open video on youtube
 import pyperclip  #importing this module to convert selected text to speech
 import os         #importing this module to access the file location in computer
 import pyjokes    #imorting this module to get jokes
-import time as tt
+import time as tt 
 import psutil #importing this module to get the system information
 
 engine = pyttsx3.init() # object creation
@@ -136,8 +136,9 @@ def screenSort():
     img.show()
 def cpu():
     usage = str(psutil.cpu_percent()) 
-    print('cpu is at ' + usage)
-    speak('cpu is at' + usage)
+    print('cpu utilization is at ' + usage)
+    speak('cpu utilization is at')
+    speak('{}%'.format(usage) )
     battery = psutil.sensors_battery()
     print('battery is at' )  
     print(battery.percent)
@@ -192,6 +193,10 @@ if __name__ == "__main__" :
             speak('ohh hello sir, please tell me how can i help you?')    
         elif 'junior' in query:
             speak('yes sir, how can i help you?')
+        elif 'what can you do for me' in query:
+            speak('there is so much thing that i can do, but in short')
+            speak('I can open different files/applications, search on google, play youtube video, send mail, search and read things from wikipedia, can take screenshorts and can open most of websites( like facebook, messenger, github, instragram, reddit,etc).')    
+            speak('what you want me to do sir?')
         elif 'open' in query:
             query = query.replace('open',"")
             print('Opening'+query)
@@ -218,7 +223,7 @@ if __name__ == "__main__" :
             query = query.replace('search'," ")
             query = query.replace('on', " ")
             web.open('https://www.google.com/search?q='+query)
-            sleep(2)  
+            
 
         elif 'google search' in query:
             web.open('https://www.google.com/') 
@@ -297,13 +302,47 @@ if __name__ == "__main__" :
 
         elif 'screenshot' in query:
             screenSort()    
+        elif 'facebook' in query:
+            username = {
+                
+                'unnat' : 'https://www.facebook.com/messages/t/100003722177427',
+                'rupesh' : 'https://www.facebook.com/messages/t/100008186652735',
+                'ayush' : 'https://www.facebook.com/messages/t/100015820215428',
+                'gaurav':  'https://www.messenger.com/t/100009440677937',
+                'sanjay': 'https://www.facebook.com/messages/t/100004372715683',
+                'bishal': 'https://www.facebook.com/messages/t/100010536152143',
+                'ishwor': 'https://www.facebook.com/messages/t/100012682471101',
+                'subash': 'https://www.facebook.com/messages/t/100007389842562'
 
+            }
+            speak('opening facebook')
+            web.open('https://www.facebook.com/')
+            tt.sleep(4)
+            speak('To whom you want to send message')
+            namee = takeCommandMic().lower()
+            print(username)
+            try:
+                
+                receiver = username[namee]
+                web.open(receiver)
+
+                speak('what should be the message sir')
+                message = takeCommandMic()
+                print(message)
+                pyautogui.typewrite(message)
+                pyautogui.press('enter')
+                speak('message sent successfully')
+            except Exception as e:
+                print(e)
+                inf = 'username not found'
+                speak(inf)
+                speak('Say it again please')
         elif 'send email' in query:
             speak('would you send mail through terminal or voice command')
             info = takeCommandMic().lower()
             email_list = {
                 
-                'bishal' : 'bishalkhatri675@gmail.com',
+                'vishal' : 'bishalkhatri675@gmail.com',
                 'bhupesh' : 'bhupeshjoshi293@gmail.com',
                 'ayush' : 'joshiayush20582059@gmail.com',
                 'gaurav':  'developer.gaurav77@gmail.com'
