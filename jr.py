@@ -14,6 +14,8 @@ import os         #importing this module to access the file location in computer
 import pyjokes    #imorting this module to get jokes
 import time as tt 
 import psutil #importing this module to get the system information
+from playsound import playsound  #importing this module to play music from computer
+import random
 
 engine = pyttsx3.init() # object creation
 
@@ -134,6 +136,7 @@ def screenSort():
     speak('sceenshort taken')
     img = pyautogui.screenshot(img_name)
     img.show()
+
 def cpu():
     usage = str(psutil.cpu_percent()) 
     print('cpu utilization is at ' + usage)
@@ -285,6 +288,7 @@ if __name__ == "__main__" :
                 print(e)
                #speak('Say that again please')
                 print('can you please repeat again!')
+
         elif 'local d' in query:
             codepath5 = 'D:\\'
             speak('opening local disk d')
@@ -295,13 +299,77 @@ if __name__ == "__main__" :
             speak('opening desktop')
             os.startfile(codepath6)
 
+        elif 'keyboard' in query:
+            speak('opening keyboard')
+            codepath7 = 'C:\\WINDOWS\\system32\\osk.exe'
+            os.startfile(codepath7)  
+            sleep(4)
+            speak('waiting for your response sir')
+
+
         elif 'joke' in query:
             jokesss = pyjokes.get_joke()
             print(jokesss)
             speak(jokesss)
 
         elif 'screenshot' in query:
-            screenSort()    
+            screenSort()   
+
+        elif 'play music' in query:
+            speak('playing music sir!')
+            playsound('C:\\Users\\GAURAV\\Music\\songs\\romanticsong.mp3')
+
+        elif 'play some romantic music' in query:
+            speak('playing romantic music sir!')
+            playsound('C:\\Users\\GAURAV\\Music\\songs\\bu.mp3')  
+
+        elif 'play my favourite song' in query:
+            speak('Playing Tujhe Kitna Chahne Lage song!')
+            print('listening...')
+            playsound('C:\\Users\\GAURAV\\Music\\songs\\tujhe.mp3')  
+            
+        elif 'shutdown' in query:
+            speak('Shutting down computer may close all your unfinished work. say ok to shutdown computer')
+            lis = takeCommandMic().lower()
+            if 'ok' in lis:
+                speak('shutting down in 10 second')
+                speak('say stop or exit to stop the shutdown!')
+                
+                sound = takeCommandMic().lower()
+                if 'stop' in sound:
+                    print('stoped')
+                    speak('stoped')
+                elif 'exit' in sound:
+                    exit()
+                    speak('closing the program')
+                    
+                else:
+                    os.system("shutdown /s /t 10")    
+            else :
+                print('shutdown process stoped sir!')
+                speak('shutdown process stoped sir!')
+                
+        elif 'restart' in query:
+            speak('Do you really want to restart your computer. say ok to restart your program')
+            liss = takeCommandMic().lower()
+            if 'ok' in liss:
+                speak('Restarting in 10 second')
+                speak('say stop or exit to stop the restart!')
+                
+                soundd = takeCommandMic().lower()
+                if 'stop' in soundd:
+                    print('stoped')
+                    speak('stoped')
+                elif 'exit' in soundd:
+                    exit()
+                    speak('closing the program')
+                    
+                else:
+                    os.system("shutdown /r /t 10")    
+            else :
+                print('restart process stoped sir!')
+                speak('restart process stoped sir!')
+
         elif 'facebook' in query:
             username = {
                 
@@ -310,9 +378,10 @@ if __name__ == "__main__" :
                 'ayush' : 'https://www.facebook.com/messages/t/100015820215428',
                 'gaurav':  'https://www.messenger.com/t/100009440677937',
                 'sanjay': 'https://www.facebook.com/messages/t/100004372715683',
-                'bishal': 'https://www.facebook.com/messages/t/100010536152143',
+                'vishal': 'https://www.facebook.com/messages/t/100010536152143',
                 'ishwor': 'https://www.facebook.com/messages/t/100012682471101',
-                'subash': 'https://www.facebook.com/messages/t/100007389842562'
+                'subash': 'https://www.facebook.com/messages/t/100007389842562',
+                'pastha': 'https://www.facebook.com/messages/t/100021935493384'
 
             }
             speak('opening facebook')
@@ -332,11 +401,13 @@ if __name__ == "__main__" :
                 pyautogui.typewrite(message)
                 pyautogui.press('enter')
                 speak('message sent successfully')
+
             except Exception as e:
                 print(e)
                 inf = 'username not found'
                 speak(inf)
                 speak('Say it again please')
+
         elif 'send email' in query:
             speak('would you send mail through terminal or voice command')
             info = takeCommandMic().lower()
