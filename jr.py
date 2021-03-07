@@ -85,9 +85,10 @@ def takeCommandMic():
     # obtain audio from the microphone
     r = sr.Recognizer()
     with sr.Microphone() as source:
-      print("Listening...")
-      r.pause_threshold = 1
-      audio = r.listen(source)  
+     
+        print("Listening...")
+        r.pause_threshold = 1
+        audio = r.listen(source)  
     try:
         print('Recognizing...')
         query = r.recognize_google(audio)
@@ -242,11 +243,66 @@ if __name__ == "__main__" :
             topic = takeCommandMic()
             pywhatkit.playonyt(topic) 
 
+        elif 'stop' in query:
+            pyautogui.press('space')   
+            speak('video paused')
+            
+        elif 'play' in query:
+            pyautogui.press('space')   
+            speak('video playing start')
+
+        elif 'skip' in query:
+            speak('skiping 5second sir!')
+            pyautogui.press('right')     
+
+        elif 'new tab' in query:
+            speak('opening new tab sir!')
+            pyautogui.keyDown('ctrl')
+            pyautogui.keyDown('t')
+            pyautogui.keyUp('ctrl')
+            pyautogui.keyUp('t')
+            pyautogui.press('enter') 
+
+        elif 'switch between tabs' in query:
+            speak('swithing between tabs sir!')  
+            pyautogui.keyDown('ctrl')
+            pyautogui.keyDown('tab')
+            pyautogui.keyUp('ctrl')
+            pyautogui.keyUp('tab')
+            pyautogui.press('enter') 
+
+        
+        elif 'exit tab' in query:
+            speak('closing tab sir!')
+            pyautogui.keyDown('ctrl')
+            pyautogui.keyDown('w')
+            pyautogui.keyUp('ctrl')
+            pyautogui.keyUp('w')
+            pyautogui.press('enter')
+        
+        elif 'exit chrome' in query:
+            speak('Closing chrome')
+            pyautogui.keyDown('alt')
+            pyautogui.keyDown('f4')
+            pyautogui.keyUp('alt')
+            pyautogui.keyUp('f4')
+            pyautogui.press('enter')
+
+        elif 'exit app' in query:
+            speak('Closing chrome')
+            pyautogui.keyDown('alt')
+            pyautogui.keyDown('f4')
+            pyautogui.keyUp('alt')
+            pyautogui.keyUp('f4')
+            pyautogui.press('enter')
+        
+            
+
         elif 'youtube' in query:
             web.open('https://www.youtube.com/') 
             speak('opening youtube')
 
-        elif 'gmail' in query:
+        elif 'gmail' in query: 
             web.open('https://mail.google.com/')
             speak('opening gmail')
 
