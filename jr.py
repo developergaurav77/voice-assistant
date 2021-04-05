@@ -16,6 +16,8 @@ import time as tt
 import psutil #importing this module to get the system information
 from playsound import playsound  #importing this module to play music from computer
 import random
+from openpyxl import Workbook
+import calendar
 
 engine = pyttsx3.init() # object creation
 
@@ -27,7 +29,7 @@ engine.setProperty('rate', voiceRate)     # setting up new voice rate
 """VOICE"""
 voices = engine.getProperty('voices')       #getting details of current voice
 #engine.setProperty('voice', voices[0].id)  #changing index, changes voices. o for male
-engine.setProperty('voice', voices[1].id)
+engine.setProperty('voice', voices[0].id)
 
 
 def speak(audio): #this function to used to speak
@@ -49,6 +51,20 @@ def date():  #this function is used to calculate current date
     speak(year)
     speak(month)
     speak(day)  
+def getDate():
+    now = datetime.datetime.now()
+    my_date = datetime.datetime.today()
+    weekday = calendar.day_name[my_date.weekday()]
+    monthNum = now.month
+    dayNum = now.day
+
+    month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                   'November', 'December']
+
+    ordinalNumbers = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', '13th','14th', '15th', '16th', '17th', '18th', '19th', '20th', '21st', '22nd', '23rd', '24th', '25th', '26th', '27th', '28th', '29th', '30th', '31st']
+
+    print('Today is ' + weekday + ', ' + month_names[monthNum - 1] + ' the ' + ordinalNumbers[dayNum - 1]) 
+    speak('Today is ' + weekday + ', ' + month_names[monthNum - 1] + ' the ' + ordinalNumbers[dayNum - 1])  
 
 def greeting():
     hour = datetime.datetime.now().hour
@@ -140,8 +156,8 @@ def screenSort():
 
 def cpu():
     usage = str(psutil.cpu_percent()) 
-    print('cpu utilization is at ' + usage)
-    speak('cpu utilization is at')
+    print('Well, Cpu utilization is at ' + usage)
+    speak('Well, thecpu utilization is at')
     speak('{}%'.format(usage) )
     battery = psutil.sensors_battery()
     print('battery is at' )  
@@ -158,7 +174,7 @@ def cpu():
     if battery.percent < 15 and battery.power_plugged == False :
         speak('battery is at critical level(<15%), whould you like to exit program!')    
         info = takeCommandMic().lower()
-        if 'yes' in info:
+        if 's' in info:
             speak('closing the application')
             quit()
         else:
@@ -172,20 +188,29 @@ def cpu():
 
 if __name__ == "__main__" :
     #wishMe()
-    #cpu()
+   
     greeting()
+    #speak('would you like to know about my status')
+    tak = takeCommandMic().lower()
+    if 's' in tak:
+        cpu()
     
     
-    while True:
+    while True: 
+         
         shutdown = 'offline'
+       
         
         query = takeCommandMic().lower()
         if 'time' in  query:
             time()
+        elif 'today' in query:
+            getDate()
         elif 'date' in query:
-            date()
+            date()    
+           
 
-        elif shutdown in query:
+        elif 'shutdown' in query:
             speak('closing the program')
             exit() 
 
@@ -202,13 +227,29 @@ if __name__ == "__main__" :
             speak('I can open different files/applications, search on google, play youtube video, send mail, search and read things from wikipedia, can take screenshorts and can open most of websites( like facebook, messenger, github, instragram, reddit,etc).')    
             speak('what you want me to do sir?')
         elif 'open' in query:
-            query = query.replace('open',"")
-            print('Opening'+query)
-            speak('opening '+query) 
-            link = 'https://www.' + query + ' .com/'
+            quer = query.replace('open',"")
+            print('Opening'+quer)
+            speak('opening '+quer) 
+            link = 'https://www.' + quer + ' .com/'
             link = link.replace(" ", "")
             print(link)
             web.open(link, new=0, autoraise=True)
+            tt.sleep(4)
+            try:
+                
+                if 'google' in quer:
+                    speak('what would you like to search on google sir?')
+                    getinfoo = takeCommandMic().lower()
+                    pyautogui.write(getinfoo)
+                    pyautogui.press('enter') 
+
+                else :
+                    print('search completed sir!')
+                    speak('search completed sir!')
+
+            except Exception as e:
+                print(e)   
+         
           
         elif 'status' in query:
             cpu()
@@ -243,11 +284,17 @@ if __name__ == "__main__" :
             topic = takeCommandMic()
             pywhatkit.playonyt(topic) 
 
+        elif 'play your favourite song' in query:
+            web.open('https://www.youtube.com/')
+
+            speak('playing  Luis Fonsi - Despacito') 
+            pywhatkit.playonyt('despacito')   
+
         elif 'stop' in query:
             pyautogui.press('space')   
             speak('video paused')
             
-        elif 'play' in query:
+        elif 'play the video' in query:
             pyautogui.press('space')   
             speak('video playing start')
 
@@ -261,9 +308,13 @@ if __name__ == "__main__" :
             pyautogui.keyDown('t')
             pyautogui.keyUp('ctrl')
             pyautogui.keyUp('t')
+            pyautogui.press('enter')
+            speak('what would you like to search on new tab sir?')
+            getinfo = takeCommandMic().lower()
+            pyautogui.write(getinfo)
             pyautogui.press('enter') 
 
-        elif 'switch between tabs' in query:
+        elif 'switch tabs' in query:
             speak('swithing between tabs sir!')  
             pyautogui.keyDown('ctrl')
             pyautogui.keyDown('tab')
@@ -280,7 +331,7 @@ if __name__ == "__main__" :
             pyautogui.keyUp('w')
             pyautogui.press('enter')
         
-        elif 'exit chrome' in query:
+        elif 'close chrome' in query:
             speak('Closing chrome')
             pyautogui.keyDown('alt')
             pyautogui.keyDown('f4')
@@ -328,7 +379,7 @@ if __name__ == "__main__" :
             speak('opening android studio')
             os.startfile(codepath3)
 
-        elif 'pro' in query:
+        elif 'premier pro' in query:
             codepath4 = 'C:\\Program Files\\Adobe\\Adobe Premiere Pro 2020\\Adobe Premiere Pro.exe'
             print('opening premier pro')
             speak('opening premier pro')
@@ -373,16 +424,18 @@ if __name__ == "__main__" :
 
         elif 'play music' in query:
             speak('playing music sir!')
-            playsound('C:\\Users\\GAURAV\\Music\\songs\\romanticsong.mp3')
+            playsound('C:\\Users\\GAURAV\\Music\\songs\\romanticsong.mp3') 
 
         elif 'play some romantic music' in query:
             speak('playing romantic music sir!')
             playsound('C:\\Users\\GAURAV\\Music\\songs\\bu.mp3')  
 
         elif 'play my favourite song' in query:
-            speak('Playing Tujhe Kitna Chahne Lage song!')
+            speak('Playing Tujhe Kitna Chahne Lage song on youtube!')
             print('listening...')
-            playsound('C:\\Users\\GAURAV\\Music\\songs\\tujhe.mp3')  
+            web.open('https://www.youtube.com/watch?v=h7gyJRWrjbg') 
+
+
             
         elif 'shutdown' in query:
             speak('Shutting down computer may close all your unfinished work. say ok to shutdown computer')
